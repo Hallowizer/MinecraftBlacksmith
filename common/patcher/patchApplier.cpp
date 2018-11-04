@@ -84,8 +84,8 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
     
     int offset = 0;
     
-    char *output = (char *) malloc(1024);
-    int len = 1024;
+    char *output = (char *) malloc(CHUNK_SIZE);
+    int len = CHUNK_SIZE;
     int used = 0;
     
     int i;
@@ -159,7 +159,7 @@ static char *read(int *readOffset, const char *input, long length) {
 
 static void write(char **output, int *len, int *used, int length, const char *data) {
     if (used+length > len) {
-        (*len) += 1024;
+        (*len) += CHUNK_SIZE;
         (*output) = (char *) realloc(*output, *len);
     }
     
