@@ -9,7 +9,7 @@
 #ifndef coreMods_hpp
 #define coreMods_hpp
 
-void setupCoreMods(void);
+void setupCoreMods(char *);
 char *transformMod(char *, char *);
 
 #endif /* coreMods_hpp */

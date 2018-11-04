@@ -16,6 +16,7 @@ typedef (int)(*mainFunc)(int, char **);
 void relaunch(int, char **);
 
 // Platform dependent functions
+char *findGameDir(int, char **);
 char *findMinecraft(void);
 char *mainName(void);
 

@@ -14,7 +14,8 @@
 static mainFunc findMain(char *);
 
 void relaunch(int argc, char **argv) {
-    setupCoreMods();
+    char *gameDir = findGameDir(argc, argv);
+    setupCoreMods(gameDir);
     
     char *minecraftBytes = findMinecraft();
     char *transformedBytes = transformMod("Minecraft", minecraftBytes);

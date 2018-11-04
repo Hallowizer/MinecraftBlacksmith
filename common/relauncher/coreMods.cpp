@@ -8,15 +8,16 @@
 
 #include <list>
 
-#include "../../api/apiCoreMods.hpp";
+#include "../../api/apiCoreMods.hpp"
 #include "coreMods.hpp"
+#include "../patcher/patcher.hpp"
 
 using namespace std;
 
 static list<modTransformer> transformers;
 
-void setupCoreMods(void) {
-    
+void setupCoreMods(char *gameDir) {
+    registerTransformer(patchTransform);
 }
 
 static void registerTransformer(modTransformer transformer) {
