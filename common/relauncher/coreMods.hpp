@@ -1,6 +1,6 @@
 //
 //  coreMods.hpp
-//  
+//  MinecraftBlacksmith
 //
 //  Created by Hallowizer on 11/2/18.
 //
