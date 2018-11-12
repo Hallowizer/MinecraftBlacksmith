@@ -32,7 +32,7 @@ void entry(void) {
     }
     
     if (enable)
-        relaunch(argc, argv);
+        relaunch(argc-1, argv);
     else
         vanillaLaunch();
 }
