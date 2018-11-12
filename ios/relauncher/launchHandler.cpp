@@ -18,5 +18,24 @@ void entry(void) {
     
     int argc = *p_argc;
     char **argv = *p_argv;
-    relaunch(argc, argv);
+    
+    int i;
+    bool enable = false;
+    
+    for (i = 0; i < argc; i++) {
+        string arg = argv[i];
+        if (arg == "enableBlacksmithMod") {
+            enable = true;
+            break;
+        }
+    }
+    
+    if (enable)
+        relaunch(argc, argv);
+    else
+        vanillaLaunch();
+}
+
+static void vanillaLaunch(void) {
+    // TODO: Remove the Blacksmith resource pack from the list, then let Minecraft proceed.
 }
