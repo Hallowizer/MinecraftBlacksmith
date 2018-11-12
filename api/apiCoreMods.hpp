@@ -11,4 +11,8 @@
 
 typedef (char *)(*modTransformer)(char *name, char *bytes);
 
+class coreMod {
+    
+};
+
 #endif /* coreMods_h */
