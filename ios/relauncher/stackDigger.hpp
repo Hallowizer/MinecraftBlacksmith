@@ -9,6 +9,6 @@
 #ifndef stackJumper_hpp
 #define stackJumper_hpp
 
-void *digToMain(int);
+void *digToMain(int, int);
 
 #endif /* stackJumper_hpp */

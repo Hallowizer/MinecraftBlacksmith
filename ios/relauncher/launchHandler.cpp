@@ -6,12 +6,14 @@
 //
 //
 
+#include "../../common/relauncher/relauncher.hpp"
 #include "stackDigger.hpp"
 
-void entry() {
+void entry(void) {
     void *stackStart = digToMain(2);
     
-    char ***p_argv = (char ***) (stackStart-sizeof(char **));
+    void **retAddr = (void **) (stackStart-sizeof(void *));
+    char ***p_argv = (char ***) (retAddr-sizeof(char **));
     int *p_argc = (int *) (p_argv-sizeof(int));
     
     int argc = *p_argc;
