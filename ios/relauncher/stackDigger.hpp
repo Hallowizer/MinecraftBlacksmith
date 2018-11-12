@@ -6,9 +6,9 @@
 //
 //
 
-#ifndef stackJumper_hpp
-#define stackJumper_hpp
+#ifndef stackDigger_hpp
+#define stackDigger_hpp
 
 void *digToMain(int, int);
 
-#endif /* stackJumper_hpp */
+#endif /* stackDigger_hpp */
