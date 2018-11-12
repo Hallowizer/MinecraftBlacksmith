@@ -24,10 +24,11 @@ void entry(void) {
     
     for (i = 0; i < argc; i++) {
         string arg = argv[i];
+        
         if (arg == "enableBlacksmithMod") {
             enable = true;
-            break;
-        }
+        } else if (enable && i < argc-1)
+            argv[i] = argv[i+1];
     }
     
     if (enable)
