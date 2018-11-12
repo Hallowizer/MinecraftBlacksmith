@@ -9,6 +9,6 @@
 #ifndef rbpLocator_hpp
 #define rbpLocator_hpp
 
-void *getRbp();
+void *getRbp(void);
 
 #endif /* rbpLocator_hpp */
