@@ -82,7 +82,14 @@ static void processFile(string gameDir, string name, string singleName) {
 }
 
 static void loadCoreMod(cmInitFunc init) {
-    
+    coreMod coremod = init();
+
+    modTransformer *transformers = coremod.getTransformers();
+    int transformerCount = coremod.getTransformerCount();
+
+    int i;
+    for (i = 0; i < transformerCount; i++)
+    	registerTransformer(transformers[i]);
 }
 
 static void registerTransformer(modTransformer transformer) {
