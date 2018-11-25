@@ -8,7 +8,7 @@
 
 #include "../../common/relauncher/relauncher.hpp"
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     relaunch(argc, argv);
     return 0; // Should not reach here.
 }

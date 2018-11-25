@@ -9,6 +9,12 @@
 #include "../../common/relauncher/relauncher.hpp"
 #include "stackDigger.hpp"
 
+#include <string>
+
+using namespace std;
+
+static void vanillaLaunch(void);
+
 void entry(void) {
     void *stackStart = digToMain(2);
     

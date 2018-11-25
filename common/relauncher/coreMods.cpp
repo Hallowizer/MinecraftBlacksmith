@@ -23,6 +23,7 @@ using namespace std;
 
 typedef coreMod (*cmInitFunc)(void);
 
+static void registerTransformer(modTransformer transformer);
 static void discoverCoreMods(string);
 static void processFile(string, string, string);
 static void loadCoreMod(cmInitFunc);
@@ -38,23 +39,23 @@ void setupCoreMods(char *gameDir) {
 static void discoverCoreMods(string gameDir) {
     string modDir = gameDir + "mods/";
     
-    DIR *dir = opendir(modDir);
+    DIR *dir = opendir(modDir.c_str());
     struct dirent *member;
     struct stat *sb = (struct stat *) malloc(sizeof(struct stat));
     
     if (dir) {
         while ((member = readdir(dir)) != NULL)
-            if (stat(modDir + member->d_name, sb) == 0 && S_ISREG(sb->st_mode))
-                processFile(modDir + member->d_name, member->d_name);
+            if (stat((modDir + member->d_name).c_str(), sb) == 0 && S_ISREG(sb->st_mode))
+                processFile(gameDir, modDir + member->d_name, member->d_name);
     }
     
-    closeDir(dir);
+    closedir(dir);
     
     free(sb);
 }
 
 static void processFile(string gameDir, string name, string singleName) {
-    FILE *fp = fopen(name, "r");
+    FILE *fp = fopen(name.c_str(), "r");
     
     char type;
     fscanf(fp, "%c", &type);
@@ -72,7 +73,7 @@ static void processFile(string gameDir, string name, string singleName) {
     
     fclose(fp);
     
-    fp = fopen(tmpModDir + singleName);
+    fp = fopen((tmpModDir + singleName).c_str(), "r+");
     fprintf(fp, bytes);
     free(bytes);
     

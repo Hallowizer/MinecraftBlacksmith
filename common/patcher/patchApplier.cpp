@@ -9,9 +9,16 @@
 #include <stdlib.h>
 #include <iostream>
 
+using namespace std;
+
 #include "patchApplier.hpp"
+#include "patchConstants.hpp"
 
 struct patchInstruction;
+
+static void append(char **, int *, int *, int , char *);
+static void copy(int *, const char *, char **, int *, int *, long, int);
+static char *read(int *, const char *, long);
 
 struct patch {
     char magic1;
@@ -89,14 +96,14 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
     int used = 0;
     
     int i;
-    for (i = 0; !done; i++) {
-        patchInstruction insn = data->instructions[i];
+    for (i = 0; ; i++) {
+        struct patchInstruction *insn = &(data->instructions[i]);
         
         if (insn->code == EOF)
             break;
         
         if (insn->code <= DATA_MAX) {
-            write(&output, &len, &used, &(insn->code));
+            append(&output, &len, &used, 1, (char *) &(insn->code));
             continue;
         }
         
@@ -105,14 +112,14 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
                 append(&output, &len, &used, insn->data.dataUshort.length, insn->data.dataUshort.value);
                 break;
             case DATA_INT:
-                append(&output, &len, &used, insn->data.dataInt.length, insn->dataInt.value);
+                append(&output, &len, &used, insn->data.dataInt.length, insn->data.dataInt.value);
                 break;
             case COPY_USHORT_UBYTE:
                 copy(&offset, source, &output, &len, &used, insn->data.copyUshortUbyte.offset, insn->data.copyUshortUbyte.length);
                 break;
             case COPY_USHORT_USHORT:
                 copy(&offset, source, &output, &len, &used, insn->data.copyUshortUshort.offset, insn->data.copyUshortUshort.length);
-                breakl
+                break;
             case COPY_USHORT_INT:
                 copy(&offset, source, &output, &len, &used, insn->data.copyUshortInt.offset, insn->data.copyUshortInt.length);
                 break;
@@ -135,14 +142,23 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
 }
 
 static void append(char **output, int *len, int *used, int length, char *value) {
-    write(output, len, used, length, value);
+	if (used+length > &len) {
+	        (*len) += CHUNK_SIZE;
+	        (*output) = (char *) realloc(*output, *len);
+	    }
+
+		int i;
+	    for (i = 0; i < length; i++)
+	        output[i+(*used)] = value[i];
+
+	    (*used) += length;
 }
 
 static void copy(int *readOffset, const char *input, char **output, int *len, int *used, long offset, int length) {
     free(read(readOffset, input, offset)); // Skip the offset bytes.
     
     char *toCopy = read(readOffset, input, length);
-    write(output, len, used, length, toCopy);
+    append(output, len, used, length, toCopy);
     free(toCopy);
 }
 
@@ -155,17 +171,4 @@ static char *read(int *readOffset, const char *input, long length) {
     
     (*readOffset) += length;
     return data;
-}
-
-static void write(char **output, int *len, int *used, int length, const char *data) {
-    if (used+length > len) {
-        (*len) += CHUNK_SIZE;
-        (*output) = (char *) realloc(*output, *len);
-    }
-    
-    int i;
-    for (i = 0; i < length; i++)
-        output[i+(*used)] = data[i];
-    
-    (*used) += length;
 }

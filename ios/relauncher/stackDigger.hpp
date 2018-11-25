@@ -9,6 +9,6 @@
 #ifndef stackDigger_hpp
 #define stackDigger_hpp
 
-void *digToMain(int, int);
+void *digToMain(int);
 
 #endif /* stackDigger_hpp */

@@ -13,8 +13,11 @@
 #include <string>
 
 #include "patcher.hpp"
+#include "patchApplier.hpp"
 
 using namespace std;
+
+static char *applyPatch(char *);
 
 struct patchHeader {
     int srcLength;
@@ -37,7 +40,7 @@ char *patchTransform(char *name, char *bytes) {
 }
 
 static char *applyPatch(char *bytes) {
-    FILE *file = fopen(binpatchFile);
+    FILE *file = fopen(binpatchFile, "r");
     struct patchHeader *header = malloc(sizeof(struct patchHeader));
     fread(header, sizeof(struct patchHeader), 1, file);
     
@@ -45,7 +48,7 @@ static char *applyPatch(char *bytes) {
     int b = 0;
     int i;
     
-    for (i = 0; i < header->srcLength; i++) {
+    for (i = 0; i < header->srcLength; i++) { // Adler 32 hash
         a += bytes[i];
         b += a;
     }
@@ -61,5 +64,5 @@ static char *applyPatch(char *bytes) {
         }
     }
     
-    return patch(bytes, file, patchHeader->patchLength);
+    return patch(bytes, file, header->patchLength);
 }

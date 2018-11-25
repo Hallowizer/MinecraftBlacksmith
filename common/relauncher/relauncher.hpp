@@ -10,7 +10,7 @@
 #define relauncher_hpp
 
 // Typedefs
-typedef (int)(*mainFunc)(int, char **);
+typedef int (*mainFunc)(int, char **);
 
 // API functions
 void relaunch(int, char **);
