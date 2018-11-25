@@ -15,9 +15,9 @@
 
 using namespace std;
 
-#include "../../api/apiCoreMods.hpp"
+#include <api/apiCoreMods.hpp>
 #include "coreMods.hpp"
-#include "../patcher/patcher.hpp"
+#include <patcher/patcher.hpp>
 
 #define COREMOD_TYPE 1
 

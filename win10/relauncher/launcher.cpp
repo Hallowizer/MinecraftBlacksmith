@@ -6,7 +6,7 @@
 //
 //
 
-#include "../../common/relauncher/relauncher.hpp"
+#include <common/relauncher/relauncher.hpp>
 
 int main(int argc, char **argv) {
     relaunch(argc, argv);

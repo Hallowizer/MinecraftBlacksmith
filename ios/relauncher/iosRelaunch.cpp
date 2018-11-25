@@ -6,7 +6,7 @@
 //
 //
 
-#include "../../common/relauncher/relauncher.hpp"
+#include <common/relauncher/relauncher.hpp>
 #include "stackDigger.hpp"
 
 // TBD

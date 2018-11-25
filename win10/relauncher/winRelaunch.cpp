@@ -6,7 +6,7 @@
 //
 //
 
-#include "../../common/relauncher/relauncher.hpp"
+#include <common/relauncher/relauncher.hpp>
 
 char *mainName(void) {
     return "main";
