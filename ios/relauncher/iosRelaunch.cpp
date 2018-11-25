@@ -7,6 +7,7 @@
 //
 
 #include "../../common/relauncher/relauncher.hpp"
+#include "stackDigger.hpp"
 
 // TBD
 #define MAIN_OFFSET
