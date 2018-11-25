@@ -9,7 +9,7 @@
 #ifndef coreMods_h
 #define coreMods_h
 
-typedef char *(*modTransformer)(char *name, char *bytes);
+typedef char *(*modTransformer)(string, char *, int);
 
 class coreMod {
     

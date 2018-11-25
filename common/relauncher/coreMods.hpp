@@ -9,11 +9,13 @@
 #ifndef coreMods_hpp
 #define coreMods_hpp
 
+#include <string>
+
 // API functions
 void setupCoreMods(char *);
 char *transformMod(char *, char *);
 
 //  Processor dependent functions
-void *loadSym(FILE *, string);
+void *loadSym(FILE *, std::string);
 
 #endif /* coreMods_hpp */

@@ -10,6 +10,6 @@
 #define patcher_hpp
 
 void init(char *);
-char *patchTransform(char *, char *);
+char *patchTransform(string, char *, int);
 
 #endif /* patcher_hpp */
