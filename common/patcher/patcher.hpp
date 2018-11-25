@@ -9,6 +9,10 @@
 #ifndef patcher_hpp
 #define patcher_hpp
 
+#include <string>
+
+using namespace std;
+
 void init(char *);
 char *patchTransform(string, char *, int);
 

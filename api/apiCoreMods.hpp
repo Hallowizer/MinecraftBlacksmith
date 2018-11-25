@@ -12,7 +12,18 @@
 typedef char *(*modTransformer)(string, char *, int);
 
 class coreMod {
-    
+public:
+	virtual ~coreMod() {
+		// NOOP
+	}
+
+	virtual modTransformer *getTransformers() {
+		return NULL;
+	}
+
+	virtual int getTransformerCount() {
+		return 0;
+	}
 };
 
 #endif /* coreMods_h */
