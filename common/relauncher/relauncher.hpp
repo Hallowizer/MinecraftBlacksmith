@@ -9,6 +9,10 @@
 #ifndef relauncher_hpp
 #define relauncher_hpp
 
+#include <string>
+
+using namespace std;
+
 // Typedefs
 typedef int (*mainFunc)(int, char **);
 
@@ -17,10 +21,10 @@ void relaunch(int, char **);
 
 // Platform dependent functions
 char *findGameDir(int, char **);
-char *findMinecraft(void);
-char *mainName(void);
+char *findMinecraft(int *);
+string mainName(void);
 
 // Processor dependent functions
-mainFunc findMainFunc(char *name, char *minecraftBytes);
+mainFunc findMainFunc(string, char *, int);
 
 #endif /* relauncher_hpp */

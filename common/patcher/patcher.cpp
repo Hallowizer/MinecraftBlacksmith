@@ -17,7 +17,7 @@
 
 using namespace std;
 
-static char *applyPatch(char *, int);
+static char *applyPatch(char *, int *);
 static void differentBinary(void);
 
 struct patchHeader {
@@ -33,14 +33,14 @@ void init(char *gameDir, bool ignorePatchDiscrepancies) {
     ignoreDiscrepancies = ignorePatchDiscrepancies;
 }
 
-char *patchTransform(string name, char *bytes, int len) {
+char *patchTransform(string name, char *bytes, int *len) {
     if (name != "Minecraft")
         return bytes;
     
     return applyPatch(bytes, len);
 }
 
-static char *applyPatch(char *bytes, int len) {
+static char *applyPatch(char *bytes, int *len) {
     FILE *file = fopen(binpatchFile, "r");
     struct patchHeader *header = malloc(sizeof(struct patchHeader));
     fread(header, sizeof(struct patchHeader), 1, file);

@@ -14,6 +14,6 @@
 using namespace std;
 
 void init(char *);
-char *patchTransform(string, char *, int);
+char *patchTransform(string, char *, int *);
 
 #endif /* patcher_hpp */

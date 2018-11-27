@@ -11,22 +11,25 @@
 #include "relauncher.hpp"
 #include "coreMods.hpp"
 
-static mainFunc findMain(char *);
+static mainFunc findMain(char *, int);
 
 void relaunch(int argc, char **argv) {
     char *gameDir = findGameDir(argc, argv);
     setupCoreMods(gameDir);
     
-    char *minecraftBytes = findMinecraft();
-    char *transformedBytes = transformMod("Minecraft", minecraftBytes);
+    int length = 0;
+    char *minecraftBytes = findMinecraft(&length);
+
+    int transformedLength = length;
+    char *transformedBytes = transformMod("Minecraft", minecraftBytes, &transformedLength);
     
-    mainFunc minecraftMain = findMain(transformedBytes);
+    mainFunc minecraftMain = findMain(transformedBytes, transformedLength);
     int exitCode = minecraftMain(argc, argv);
     
     exit(exitCode);
 }
 
-static mainFunc findMain(char *minecraftBytes) {
+static mainFunc findMain(char *minecraftBytes, int length) {
     char *name = mainName();
-    return findMainFunc(name, minecraftBytes);
+    return findMainFunc(name, minecraftBytes, length);
 }

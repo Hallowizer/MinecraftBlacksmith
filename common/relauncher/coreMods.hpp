@@ -13,7 +13,7 @@
 
 // API functions
 void setupCoreMods(char *);
-char *transformMod(char *, char *);
+char *transformMod(char *, char *, int *);
 
 //  Processor dependent functions
 void *loadSym(FILE *, std::string);
