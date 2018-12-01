@@ -45,7 +45,7 @@ static char *applyPatch(char *bytes, int *len) {
     struct patchHeader *header = malloc(sizeof(struct patchHeader));
     fread(header, sizeof(struct patchHeader), 1, file);
     
-    if (len != header->srcLength)
+    if ((*len) != header->srcLength)
     	differentBinary();
 
     int a = 1;
