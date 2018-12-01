@@ -16,12 +16,28 @@
 typedef void (*HandlerInitFunc)(BmlCommonHandler);
 
 BmlCommonHandler enter(void) {
-	FILE *file = fopen((getRelauncherGameDir() + "blacksmith/bml").c_str(), "r");
-	HandlerInitFunc init = loadSym(file, "initFunctionTable");
+	FILE *fp = fopen((getRelauncherGameDir() + "blacksmith/bml").c_str(), "r");
+	
+	int len;
+	fscanf(fp, "%d", &len);
+	
+	char *bytes = malloc(len);
+	fread(bytes, 1, len, fp);
+	
+	fclose(fp);
+	
+	char *transformedBytes = transformMod("BML", bytes, &len);
+	
+	fp = fopen((getRelauncherGameDir() + "blacksmith/temp/bml").c_str(), "r+");
+	fwrite(transformedBytes, 1, len, fp);
+	HandlerInitFunc init = loadSym(fp, "initFunctionTable");
+	
+	fclose(fp);
+	remove((getRelauncherGameDir() + "blacksmith/temp/bml").c_str());
 	
 	BmlCommonHandler handler = (BmlCommonHandler) malloc(sizeof(struct BmlFunctionTable));
 	init(handler);
 	
-	fclose(file);
+	fclose(fp);
 	return handler;
 }
