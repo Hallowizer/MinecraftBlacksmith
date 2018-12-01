@@ -8,7 +8,7 @@
 #ifndef ENTRY_HPP_
 #define ENTRY_HPP_
 
-typedef int (*enterFunc)(void);
+typedef int (*EnterFunc)(void);
 
 int enter(void);
 

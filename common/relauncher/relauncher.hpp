@@ -16,7 +16,7 @@
 using namespace std;
 
 // Typedefs
-typedef int (*mainFunc)(int, char **, enterFunc);
+typedef int (*MainFunc)(int, char **, EnterFunc);
 
 // API functions
 void relaunch(int, char **);
@@ -28,6 +28,6 @@ string findMinecraft(int *);
 string mainName(void);
 
 // Processor dependent functions
-mainFunc findMainFunc(string, char *, int);
+MainFunc findMainFunc(string, char *, int);
 
 #endif /* relauncher_hpp */

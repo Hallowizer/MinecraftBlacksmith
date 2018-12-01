@@ -21,14 +21,14 @@ using namespace std;
 
 #define COREMOD_TYPE 1
 
-typedef coreMod (*cmInitFunc)(void);
+typedef CoreMod (*cmInitFunc)(void);
 
-static void registerTransformer(modTransformer transformer);
+static void registerTransformer(ModTransformer transformer);
 static void discoverCoreMods(string);
 static void processFile(string, string, string);
 static void loadCoreMod(cmInitFunc);
 
-static list<modTransformer> transformers;
+static list<ModTransformer> transformers;
 
 void setupCoreMods(string gameDir) {
     registerTransformer(patchTransform);
@@ -82,9 +82,9 @@ static void processFile(string gameDir, string name, string singleName) {
 }
 
 static void loadCoreMod(cmInitFunc init) {
-    coreMod coremod = init();
+    CoreMod coremod = init();
 
-    modTransformer *transformers = coremod.getTransformers();
+    ModTransformer *transformers = coremod.getTransformers();
     int transformerCount = coremod.getTransformerCount();
 
     int i;
@@ -92,12 +92,12 @@ static void loadCoreMod(cmInitFunc init) {
     	registerTransformer(transformers[i]);
 }
 
-static void registerTransformer(modTransformer transformer) {
+static void registerTransformer(ModTransformer transformer) {
     transformers.push_back(transformer);
 }
 
 char *transformMod(string name, char *bytes, int *length) {
-    for (list<modTransformer>::iterator iter = transformers.begin(); iter != transformers.end(); iter++)
+    for (list<ModTransformer>::iterator iter = transformers.begin(); iter != transformers.end(); iter++)
         bytes = (*iter)(name, bytes, length);
     
     return bytes;

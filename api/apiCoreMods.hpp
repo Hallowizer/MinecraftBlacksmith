@@ -9,15 +9,15 @@
 #ifndef coreMods_h
 #define coreMods_h
 
-typedef char *(*modTransformer)(string, char *, int *);
+typedef char *(*ModTransformer)(string, char *, int *);
 
-class coreMod {
+class CoreMod {
 public:
-	virtual ~coreMod() {
+	virtual ~CoreMod() {
 		// NOOP
 	}
 
-	virtual modTransformer *getTransformers() {
+	virtual ModTransformer *getTransformers() {
 		return NULL;
 	}
 
