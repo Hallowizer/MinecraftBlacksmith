@@ -6,9 +6,20 @@
 //
 //
 
+#include <iostream>
+
 #include <common/relauncher/relauncher.hpp>
+
+static void returned(void);
 
 int main(int argc, char **argv) {
     relaunch(argc, argv);
-    return 0; // Should not reach here.
+    
+    // Should not reach here.
+    returned();
+    return 1;
+}
+
+static void returned(void) {
+	cerr << "MinecraftBlacksmith somehow returned from the relauncher.";
 }
