@@ -63,8 +63,6 @@ static void processFile(string gameDir, string name, string singleName) {
     if (type != COREMOD_TYPE)
         return;
     
-    string tmpModDir = gameDir + "blacksmith/tmp/mods/";
-    
     int len;
     fscanf(fp, "%d", &len);
     
@@ -73,9 +71,14 @@ static void processFile(string gameDir, string name, string singleName) {
     
     fclose(fp);
     
+    string tmpModDir = gameDir + "blacksmith/temp/mods/";
     fp = fopen((tmpModDir + singleName).c_str(), "r+");
+    
     fprintf(fp, bytes);
     free(bytes);
+    
+    fclose(fp);
+    remove((tmpModDir + singleName).c_str());
     
     cmInitFunc init = (cmInitFunc) loadSym(fp, "blacksmith_reserved_initCoreMod");
     loadCoreMod(init);
