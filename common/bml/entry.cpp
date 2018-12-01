@@ -26,7 +26,7 @@ BmlCommonHandler enter(void) {
 	
 	fclose(fp);
 	
-	char *transformedBytes = transformMod("BML", bytes, &len);
+	char *transformedBytes = transformMod("bml", bytes, &len);
 	
 	fp = fopen((getRelauncherGameDir() + "blacksmith/temp/bml").c_str(), "r+");
 	fwrite(transformedBytes, 1, len, fp);

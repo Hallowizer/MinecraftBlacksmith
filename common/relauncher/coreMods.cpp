@@ -99,9 +99,9 @@ static void registerTransformer(ModTransformer transformer) {
     transformers.push_back(transformer);
 }
 
-char *transformMod(string name, char *bytes, int *length) {
+char *transformMod(string modid, char *bytes, int *length) {
     for (list<ModTransformer>::iterator iter = transformers.begin(); iter != transformers.end(); iter++)
-        bytes = (*iter)(name, bytes, length);
+        bytes = (*iter)(modid, bytes, length);
     
     return bytes;
 }

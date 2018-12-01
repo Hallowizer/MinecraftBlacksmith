@@ -23,7 +23,7 @@ void relaunch(int argc, char **argv) {
     char *minecraftBytes = findMinecraft(&length);
 
     int transformedLength = length;
-    char *transformedBytes = transformMod("Minecraft", minecraftBytes, &transformedLength);
+    char *transformedBytes = transformMod("minecraft", minecraftBytes, &transformedLength);
     
     MainFunc minecraftMain = findMain(transformedBytes, transformedLength);
     int exitCode = minecraftMain(argc, argv, enter);
