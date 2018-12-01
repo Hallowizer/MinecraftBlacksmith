@@ -47,7 +47,7 @@ static char *applyPatch(char *bytes, int *len) {
     
     if ((*len) != header->srcLength)
     	differentBinary();
-
+    
     int a = 1;
     int b = 0;
     int i;
@@ -65,7 +65,7 @@ static char *applyPatch(char *bytes, int *len) {
 
 static void differentBinary(void) {
 	cerr << "There is a binary discrepancy between the expected and actual Minecraft binary. Did you modify Minecraft?";
-
+	
 	if (ignoreDiscrepancies)
 		cerr << "BML will ignore this error. This may result in an invalid patched binary.";
 	else {
