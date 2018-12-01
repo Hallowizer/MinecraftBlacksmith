@@ -42,6 +42,7 @@ char *patchTransform(string name, char *bytes, int *len) {
 
 static char *applyPatch(char *bytes, int *len) {
     FILE *file = fopen(binpatchFile, "r");
+    
     struct patchHeader *header = malloc(sizeof(struct patchHeader));
     fread(header, sizeof(struct patchHeader), 1, file);
     
@@ -60,7 +61,9 @@ static char *applyPatch(char *bytes, int *len) {
     if (header->checksum != b)
     	differentBinary();
     
-    return patch(bytes, file, header->patchLength);
+    char *newBytes = patch(bytes, file, header->patchLength);
+    fclose(file);
+    return newBytes;
 }
 
 static void differentBinary(void) {
