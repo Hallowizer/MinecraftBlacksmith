@@ -33,8 +33,8 @@ void init(char *gameDir, bool ignorePatchDiscrepancies) {
     ignoreDiscrepancies = ignorePatchDiscrepancies;
 }
 
-char *patchTransform(string name, char *bytes, int *len) {
-    if (name != "Minecraft")
+char *patchTransform(string modid, char *bytes, int *len) {
+    if (modid != "minecraft")
         return bytes;
     
     return applyPatch(bytes, len);
