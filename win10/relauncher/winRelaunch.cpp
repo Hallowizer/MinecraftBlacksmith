@@ -8,6 +8,6 @@
 
 #include <common/relauncher/relauncher.hpp>
 
-char *mainName(void) {
+string mainName(void) {
     return "main";
 }

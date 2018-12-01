@@ -20,6 +20,6 @@ char *findMinecraft(void) {
     return (char *) (retAddr-MAIN_OFFSET);
 }
 
-char *mainName(void) {
+string mainName(void) {
     return "bmlReentry";
 }

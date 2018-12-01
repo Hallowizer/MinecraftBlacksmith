@@ -23,8 +23,8 @@ void relaunch(int, char **);
 string getRelauncherGameDir();
 
 // Platform dependent functions
-string *findGameDir(int, char **);
-string findMinecraft(int *);
+string findGameDir(int, char **);
+char *findMinecraft(int *);
 string mainName(void);
 
 // Processor dependent functions
