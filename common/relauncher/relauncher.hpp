@@ -11,17 +11,20 @@
 
 #include <string>
 
+#include <common/bml/entry.hpp>
+
 using namespace std;
 
 // Typedefs
-typedef int (*mainFunc)(int, char **);
+typedef int (*mainFunc)(int, char **, enterFunc);
 
 // API functions
 void relaunch(int, char **);
+string getRelauncherGameDir();
 
 // Platform dependent functions
-char *findGameDir(int, char **);
-char *findMinecraft(int *);
+string *findGameDir(int, char **);
+string findMinecraft(int *);
 string mainName(void);
 
 // Processor dependent functions

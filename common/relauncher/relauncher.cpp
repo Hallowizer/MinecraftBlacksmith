@@ -13,8 +13,10 @@
 
 static mainFunc findMain(char *, int);
 
+static string gameDir;
+
 void relaunch(int argc, char **argv) {
-    char *gameDir = findGameDir(argc, argv);
+    gameDir = findGameDir(argc, argv);
     setupCoreMods(gameDir);
     
     int length = 0;
@@ -24,7 +26,7 @@ void relaunch(int argc, char **argv) {
     char *transformedBytes = transformMod("Minecraft", minecraftBytes, &transformedLength);
     
     mainFunc minecraftMain = findMain(transformedBytes, transformedLength);
-    int exitCode = minecraftMain(argc, argv);
+    int exitCode = minecraftMain(argc, argv, enter);
     
     exit(exitCode);
 }
@@ -32,4 +34,8 @@ void relaunch(int argc, char **argv) {
 static mainFunc findMain(char *minecraftBytes, int length) {
     char *name = mainName();
     return findMainFunc(name, minecraftBytes, length);
+}
+
+string getRelauncherGameDir() {
+	return gameDir;
 }

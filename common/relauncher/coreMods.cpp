@@ -30,7 +30,7 @@ static void loadCoreMod(cmInitFunc);
 
 static list<modTransformer> transformers;
 
-void setupCoreMods(char *gameDir) {
+void setupCoreMods(string gameDir) {
     registerTransformer(patchTransform);
     
     discoverCoreMods(gameDir);

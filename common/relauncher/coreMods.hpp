@@ -12,8 +12,8 @@
 #include <string>
 
 // API functions
-void setupCoreMods(char *);
-char *transformMod(char *, char *, int *);
+void setupCoreMods(string);
+char *transformMod(string, char *, int *);
 
 //  Processor dependent functions
 void *loadSym(FILE *, std::string);
