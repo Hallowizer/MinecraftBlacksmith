@@ -16,7 +16,9 @@ using namespace std;
 static void vanillaLaunch(void);
 
 void entry(void) {
-    void *stackStart = digToMain(2);
+	initStackDigger(); // Keep this first!
+	
+    void *stackStart = getStackStart();
     
     void **retAddr = (void **) (stackStart-sizeof(void *));
     char ***p_argv = (char ***) (retAddr-sizeof(char **));

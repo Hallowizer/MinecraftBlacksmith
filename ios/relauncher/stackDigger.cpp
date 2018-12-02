@@ -10,15 +10,18 @@
 #include "rbpLocator.hpp"
 
 // TBD
-#define MINECRAFT_FRAME_COUNT
+#define MEMORY_SIZE
 
-void *digToMain(int extraFrames) {
-    void *addr = getRbp();
-    int frameCount = MINECRAFT_FRAME_COUNT+extraFrames;
-    
-    int i;
-    for (i = 0; i < frameCount; i++)
-        addr = *((void **) addr);
-    
-    return addr;
+static void *stackStart;
+
+void initStackDigger(void) {
+	char dummy;
+	char *addr = &dummy;
+	
+	addr += MEMORY_SIZE;
+	stackStart = addr;
+}
+
+void *getStackStart(void) {
+    return stackStart;
 }

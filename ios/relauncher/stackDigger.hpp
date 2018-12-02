@@ -9,6 +9,7 @@
 #ifndef stackDigger_hpp
 #define stackDigger_hpp
 
-void *digToMain(int);
+void initStackDigger(void);
+void *getStackStart(void);
 
 #endif /* stackDigger_hpp */

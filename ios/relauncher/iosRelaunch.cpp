@@ -13,7 +13,7 @@
 #define MAIN_OFFSET
 
 char *findMinecraft(void) {
-    void *stackStart = digToMain(3); // 4 stack frames in, but skip the last Minecraft frame.
+    void *stackStart = getStackStart(); // 4 stack frames in, but skip the last Minecraft frame.
     void **p_retAddr = (void **) (stackStart-sizeof(void *));
     
     void *retAddr = *p_retAddr;
