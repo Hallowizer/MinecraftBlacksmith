@@ -13,7 +13,7 @@ string readNoBinary(FILE *fp) {
 	char *word;
 	char character;
 	
-	int label;
+	long label;
 	char *end;
 	
 	string contents = "";
@@ -21,11 +21,11 @@ string readNoBinary(FILE *fp) {
 	fscanf(fp, " Minecraft.Windows.exe file format COFF-x86-64 "); // Skip header.
 	
 	while (label != LAST_LABEL) {
-		fscanf(fp, "%s ", &word);
+		fscanf(fp, "%s ", word);
 		
 		if (strcmp(word, "Disassembly") == 0) { // Section header
-			fscanf(fp, "of section %s ", &word, &word); // Skip human text
-			fscanf(fp, "%s ", &word); // Take section label.
+			fscanf(fp, "of section %s ", word); // Skip human text
+			fscanf(fp, "%s ", word); // Take section label.
 			
 			// And copy it over.
 			contents += word;
@@ -37,7 +37,7 @@ string readNoBinary(FILE *fp) {
 		label = strtol(word, NULL, 16); // Skips the colon
 		
 		do { // Skip binary numbers.
-			fscanf(fp, "%s ", &word);
+			fscanf(fp, "%s ", word);
 			strtol(word, &end, 16);
 		} while (end[0] == '\0');
 		
@@ -45,7 +45,7 @@ string readNoBinary(FILE *fp) {
 		contents += ":\n";
 		
 		do {
-			fscanf(fp, "%s%c", &word, &character);
+			fscanf(fp, "%s%c", word, &character);
 			
 			contents += word;
 			contents += character;

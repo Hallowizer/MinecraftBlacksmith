@@ -5,10 +5,10 @@
  *      Author: hallowizer
  */
 
-#include <labelProcessor.hpp>
+#include "labelProcessor.hpp"
 
 string processLabels(string input) {
-	char *text = malloc(input.size()*sizeof(char));
+	char *text = (char *) malloc(input.size()*sizeof(char));
 	strcpy(text, input.c_str());
 	
 	char *token;
@@ -37,7 +37,7 @@ string processLabels(string input) {
 		}
 		
 		token2 = strtok(NULL, " \n");
-		if (token2 == "pushq") { // Let all function labels through.
+		if (strcmp(token2, "pushq") == 0) { // Let all function labels through.
 			result += "_func_"; // First underscore indicates that this is a function. Second underscore connects the word func to the hex value.
 			result += token;
 			result += '\n';
