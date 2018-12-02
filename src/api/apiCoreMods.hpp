@@ -9,7 +9,9 @@
 #ifndef coreMods_h
 #define coreMods_h
 
-typedef char *(*ModTransformer)(string, char *, int *);
+#include <string>
+
+typedef char *(*ModTransformer)(std::string, char *, int *);
 
 class CoreMod {
 public:
