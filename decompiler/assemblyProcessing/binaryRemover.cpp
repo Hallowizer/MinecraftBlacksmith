@@ -40,8 +40,6 @@ string readNoBinary(istream& in) {
 			continue;
 		}
 		
-		cout << "Stoi: " << word;
-		
 		try {
 			label = stol(word, NULL, 16); // Skips the colon
 		} catch (const exception&) {
@@ -61,6 +59,9 @@ string readNoBinary(istream& in) {
 		
 		contents += to_string(label);
 		contents += ":\n";
+		
+		contents += word;
+		contents += " ";
 		
 		string text;
 		getline(in, text);

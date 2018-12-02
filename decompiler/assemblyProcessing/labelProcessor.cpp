@@ -5,6 +5,8 @@
  *      Author: hallowizer
  */
 
+#include <iostream>
+
 #include "labelProcessor.hpp"
 
 string processLabels(string input) {
@@ -13,6 +15,7 @@ string processLabels(string input) {
 	
 	char *token;
 	char *token2;
+	char *token3;
 	
 	bool first = true;
 	
@@ -38,12 +41,25 @@ string processLabels(string input) {
 		
 		token2 = strtok(NULL, " \n");
 		if (strcmp(token2, "pushq") == 0) { // Let all function labels through.
-			result += "_func_"; // First underscore indicates that this is a function. Second underscore connects the word func to the hex value.
-			result += token;
-			result += '\n';
+			token3 = strtok(NULL, " \n");
+			if (strcmp(token3, "\t%rbp") == 0) { // Functions start by pushing %rbp
+				result += "_func_"; // First underscore indicates that this is a function. Second underscore connects the word func to the hex value.
+				result += token;
+				
+				result += '\n';
+				result += "pushq %rbp";
+				
+				continue;
+			}
+			
+			cout << token3 << ", ";
+			
 			result += token2;
+			result += token3;
 			continue;
 		}
+		
+		result += token2;
 	}
 	
 	free(text);
