@@ -10,8 +10,14 @@
 #define coreMods_h
 
 #include <string>
+#include <vector>
 
-typedef char *(*ModTransformer)(std::string, char *, int *);
+struct ModBytecode {
+	std::string modid;
+	std::vector<char> bytes;
+};
+
+typedef void (*ModTransformer)(ModBytecode&);
 
 class CoreMod {
 public:

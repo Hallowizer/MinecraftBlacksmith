@@ -14,12 +14,12 @@ using namespace std;
 #include "patchApplier.hpp"
 #include "patchConstants.hpp"
 
-static void append(char **, int *, int *, int, FILE *);
-static void copy(int *, const char *, char **, int *, int *, long, int);
+static void append(vector<char>&, int, FILE *);
+static void copy(vector<char>&, vector<char>&, int *, long, int);
 
-static void skip(int *, const char *, long);
-static char *read(int *, const char *, long);
-static void write(char **, int *, int *, int, char *);
+static void skip(int *, vector<char>&, long);
+static char *read(int *, vector<char>&, long);
+static void write(vector<char>&, int, const char *);
 
 struct patchMagic {
 	char magic1;
@@ -75,22 +75,19 @@ struct patchInstruction {
 	} data;
 };
 
-char *patch(char *source, FILE *patchSource, int patchLength) {
+void patch(vector<char>& bytes, FILE *patchSource) {
 	struct patchMagic *magic = (struct patchMagic *) malloc(sizeof(struct patchMagic));
 	fread(magic, sizeof(struct patchMagic), 1, patchSource);
 	
 	if (magic->magic1 != 0x93 || magic->magic2 != 0x37 || magic->magic3 != 0x8d || magic->magic4 != 0x01) {
 		cerr << "Invalid patch format.";
-		return source;
+		return;
 	}
 	
 	free(magic);
 	
-	int offset = 0;
-	
-	char *output = (char *) malloc(CHUNK_SIZE);
-	int len = CHUNK_SIZE;
-	int used = 0;
+	int readIndex = 0;
+	vector<char> output;
 	
 	int i;
 	for (i = 0; ; i++) {
@@ -103,7 +100,7 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
 		}
 		
 		if (insn->code <= DATA_MAX) {
-			write(&output, &len, &used, 1, (char *) &(insn->code));
+			write(output, 1, (char *) &(insn->code));
 			
 			free(insn);
 			continue;
@@ -111,83 +108,75 @@ char *patch(char *source, FILE *patchSource, int patchLength) {
 		
 		switch (insn->code) {
 		case DATA_USHORT:
-			append(&output, &len, &used, insn->data.dataUshort, patchSource);
+			append(output, insn->data.dataUshort, patchSource);
 			break;
 		case DATA_INT:
-			append(&output, &len, &used, insn->data.dataInt, patchSource);
+			append(output, insn->data.dataInt, patchSource);
 			break;
 		case COPY_USHORT_UBYTE:
-			copy(&offset, source, &output, &len, &used, insn->data.copyUshortUbyte.offset, insn->data.copyUshortUbyte.length);
+			copy(bytes, output, &readIndex, insn->data.copyUshortUbyte.offset, insn->data.copyUshortUbyte.length);
 			break;
 		case COPY_USHORT_USHORT:
-			copy(&offset, source, &output, &len, &used, insn->data.copyUshortUshort.offset, insn->data.copyUshortUshort.length);
+			copy(bytes, output, &readIndex, insn->data.copyUshortUshort.offset, insn->data.copyUshortUshort.length);
 			break;
 		case COPY_USHORT_INT:
-			copy(&offset, source, &output, &len, &used, insn->data.copyUshortInt.offset, insn->data.copyUshortInt.length);
+			copy(bytes, output, &readIndex, insn->data.copyUshortInt.offset, insn->data.copyUshortInt.length);
 			break;
 		case COPY_INT_UBYTE:
-			copy(&offset, source, &output, &len, &used, insn->data.copyIntUbyte.offset, insn->data.copyIntUbyte.length);
+			copy(bytes, output, &readIndex, insn->data.copyIntUbyte.offset, insn->data.copyIntUbyte.length);
 			break;
 		case COPY_INT_USHORT:
-			copy(&offset, source, &output, &len, &used, insn->data.copyIntUshort.offset, insn->data.copyIntUshort.length);
+			copy(bytes, output, &readIndex, insn->data.copyIntUshort.offset, insn->data.copyIntUshort.length);
 			break;
 		case COPY_INT_INT:
-			copy(&offset, source, &output, &len, &used, insn->data.copyIntInt.offset, insn->data.copyIntInt.length);
+			copy(bytes, output, &readIndex, insn->data.copyIntInt.offset, insn->data.copyIntInt.length);
 			break;
 		case COPY_LONG_INT:
-			copy(&offset, source, &output, &len, &used, insn->data.copyLongInt.offset, insn->data.copyLongInt.length);
+			copy(bytes, output, &readIndex, insn->data.copyLongInt.offset, insn->data.copyLongInt.length);
 			break;
 		}
 		
 		free(insn);
 	}
 	
-	free(source);
-	return (char *) realloc(output, used);
+	
 }
 
-static void append(char **output, int *len, int *used, int length, FILE *src) {
+static void append(vector<char>& output, int length, FILE *src) {
 	char *data = malloc(length);
 	fread(data, 1, length, src);
 	
-	write(output, len, used, length, data);
+	write(output, length, data);
 	
 	free(data);
 }
 
-static void copy(int *readOffset, const char *input, char **output, int *len, int *used, long offset, int length) {
-	skip(readOffset, input, offset);
+static void copy(vector<char>& source, vector<char>& output, int *readIndex, long offset, int length) {
+	skip(readIndex, source, offset);
 	
-	char *toCopy = read(readOffset, input, length);
-	write(output, len, used, length, toCopy);
+	char *toCopy = read(readIndex, source, length);
+	write(output, length, toCopy);
 	free(toCopy);
 }
 
-static void skip(int *readOffset, const char *input, long length) {
-	char *ptr = read(readOffset, input, length);
+static void skip(int *index, vector<char>& input, long length) {
+	char *ptr = read(index, input, length);
 	free(ptr);
 }
 
-static char *read(int *readOffset, const char *input, long length) {
+static char *read(int *index, vector<char>& input, long length) {
 	char *data = (char *) malloc(length);
 	
 	long i;
 	for (i = 0; i < length; i++)
-		data[i] = input[i+(*readOffset)];
+		data[i] = input[i+(*index)];
 	
-	(*readOffset) += length;
+	(*index) += length;
 	return data;
 }
 
-static void write(char **output, int *len, int *used, int length, char *value) {
-	if (used+length > &len) {
-		(*len) += CHUNK_SIZE;
-		(*output) = (char *) realloc(*output, *len);
-	}
-	
+static void write(vector<char>& output, int length, const char *value) {
 	int i;
 	for (i = 0; i < length; i++)
-		output[i+(*used)] = value[i];
-	
-	(*used) += length;
+		output.push_back(value[i]);
 }

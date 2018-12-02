@@ -11,9 +11,11 @@
 
 #include <string>
 
+#include <apiCoreMods.hpp>
+
 using namespace std;
 
 void init(char *);
-char *patchTransform(string, char *, int *);
+void patchTransform(ModBytecode&);
 
 #endif /* patcher_hpp */

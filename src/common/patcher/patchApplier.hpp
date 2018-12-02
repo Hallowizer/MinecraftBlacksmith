@@ -11,6 +11,10 @@
 
 #include <stdio.h>
 
-char *patch(char *, FILE *, int);
+#include <vector>
+
+using namespace std;
+
+void patch(vector<char>, FILE *);
 
 #endif /* patchApplier_hpp */

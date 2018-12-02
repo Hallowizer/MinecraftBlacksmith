@@ -17,7 +17,7 @@
 
 using namespace std;
 
-static char *applyPatch(char *, int *);
+static void applyPatch(vector<char>&);
 static void differentBinary(void);
 
 struct patchHeader {
@@ -33,20 +33,20 @@ void init(char *gameDir, bool ignorePatchDiscrepancies) {
     ignoreDiscrepancies = ignorePatchDiscrepancies;
 }
 
-char *patchTransform(string modid, char *bytes, int *len) {
-    if (modid != "minecraft")
-        return bytes;
+void patchTransform(ModBytecode& bytecode) {
+    if (bytecode.modid != "minecraft")
+        return;
     
-    return applyPatch(bytes, len);
+    applyPatch(bytecode.bytes);
 }
 
-static char *applyPatch(char *bytes, int *len) {
+static void applyPatch(vector<char>& bytes) {
     FILE *file = fopen(binpatchFile, "r");
     
     struct patchHeader *header = malloc(sizeof(struct patchHeader));
     fread(header, sizeof(struct patchHeader), 1, file);
     
-    if ((*len) != header->srcLength)
+    if (bytes.size() != header->srcLength)
     	differentBinary();
     
     int a = 1;
@@ -61,9 +61,8 @@ static char *applyPatch(char *bytes, int *len) {
     if (header->checksum != b)
     	differentBinary();
     
-    char *newBytes = patch(bytes, file, header->patchLength);
+    patch(bytes, file);
     fclose(file);
-    return newBytes;
 }
 
 static void differentBinary(void) {
