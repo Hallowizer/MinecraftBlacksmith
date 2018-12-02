@@ -18,7 +18,7 @@ using namespace std;
 
 int main(int argc, char **argv) {
 	if (argc < 2) {
-		cerr << "Usage: processasm <source> <destination>";
+		cerr << "Usage: processasm <source> <destination>\n";
 		return 1;
 	}
 	
