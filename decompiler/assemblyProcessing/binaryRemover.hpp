@@ -8,13 +8,12 @@
 #ifndef BINARYREMOVER_HPP_
 #define BINARYREMOVER_HPP_
 
-#include <stdio.h>
-
+#include <iostream>
 #include <string>
 
 using namespace std;
 
-string readNoBinary(FILE *);
+string readNoBinary(istream&);
 
 
 #endif /* BINARYREMOVER_HPP_ */
